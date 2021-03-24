@@ -1,3 +1,6 @@
+# series of png images for gifs
+gif_creation/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
