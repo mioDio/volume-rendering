@@ -43,7 +43,7 @@ def yt_render(f_path, anim=False):
     wat_source.tfh.tf = wat_tf
     wat_source.tfh.bounds = wat_bounds
     wat_source.tfh.grey_opacity = False
-    wat_source.tfh.plot('render/wat_transfer_function.png')
+    wat_source.tfh.plot('../render/wat_transfer_function.png')
 
     ### Set up camera ###
     #####################
@@ -60,20 +60,20 @@ def yt_render(f_path, anim=False):
     ### Renering ###
     ################
     sc.render()
-    sc.save('render/mri_head.png', sigma_clip=2.0)
+    sc.save('../render/mri_head.png', sigma_clip=2.0)
     if anim == True:
         frame = 0
-        sc.save('gif_creation/wat_head_%04i.png' % frame, sigma_clip=2.0)
+        sc.save('../gif_creation/wat_head_%04i.png' % frame, sigma_clip=2.0)
         for _ in cam.iter_rotate(2. * np.pi, 180):
             frame += 1
-            fname = 'gif_creation/wat_mri_head_%04i.png' % frame
+            fname = '../gif_creation/wat_mri_head_%04i.png' % frame
             if not os.path.isfile(fname):
                 sc.render()
                 sc.save(fname, sigma_clip=2.0)
 
     
 if __name__ == "__main__":
-    f_path = "data/2_water_01_headneck.nii.gz"
+    f_path = "../data/2_water_01_headneck.nii.gz"
     start_time = time.time()
     yt_render(f_path, anim=False)
     print("--- %s seconds ---" % (time.time() - start_time))
