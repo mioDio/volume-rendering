@@ -13,12 +13,15 @@ res_z = 1.
 def yt_render(f_path, brain_path, anim=False):
     wat_img = nib.load(f_path)
     wat_arr = wat_img.get_fdata() + 0.1
+    # wat_arr =  np.rot90(wat_arr,
+    #                       k=3,
+    #                       axes=(1, 2))
     print(wat_img.header)
     print(f"Water min: {wat_arr.min()}")
     print(f"Water max: {wat_arr.max()}")
     print(f"Water shape: {wat_arr.shape}")
     
-    alpha_wat = 10.0
+    alpha_wat = 3.
     alpha_brain = 1.0
     
     wat_data = dict(density = (wat_arr, "g/cm**3"))
@@ -59,8 +62,8 @@ def yt_render(f_path, brain_path, anim=False):
     source_brain = sc[1]
     brain_bounds = (0.1, 3e2)
     brain_tf = yt.ColorTransferFunction(np.log10(brain_bounds))
-    brain_tf.add_gaussian(np.log10(.75e2), width=0.005, height=[1., 0., 0., alpha_brain])
-    brain_tf.add_gaussian(np.log10(0.5e2), width=0.005, height=[0., .75, 1., alpha_brain])
+    brain_tf.add_gaussian(np.log10(.75e2), width=0.005, height=[0., 0., 1., alpha_brain])
+    brain_tf.add_gaussian(np.log10(0.5e2), width=0.005, height=[1., 0., 0., alpha_brain])
 
     source_brain.tfh.tf = brain_tf
     source_brain.tfh.bounds = brain_bounds
@@ -73,7 +76,8 @@ def yt_render(f_path, brain_path, anim=False):
     wat_bounds = (0.1, 5e3)
     wat_tf = yt.ColorTransferFunction(np.log10(wat_bounds))
     # wat_tf.add_gaussian(np.log10(0.5e2), width=0.001, height=[0., 0.75, 1., alpha_wat])
-    wat_tf.add_gaussian(np.log10(2e2), width=0.001, height=[0., 0.75, 1., alpha_wat - 0.5])
+    # wat_tf.add_gaussian(np.log10(1e2), width=0.01, height=[1., 1., 1., alpha_wat])
+    wat_tf.add_gaussian(np.log10(2e2), width=0.001, height=[0., .75, 1., alpha_wat])
     # wat_tf.add_gaussian(np.log10(2e3), width=0.001, height=[1., 0., 0., alpha_wat])
 
 
@@ -110,8 +114,8 @@ def yt_render(f_path, brain_path, anim=False):
 
     
 if __name__ == "__main__":
-    # f_path = "../data/3d_sag_t1_bravo_nq.nii.gz"
-    f_path = "../data/wm.nii.gz"
+    f_path = "../data/3d_sag_t1_bravo_nq.nii.gz"
+    # f_path = "../data/wm.nii.gz"
     brain_path = "../data/brainmask.nii.gz"
     start_time = time.time()
     yt_render(f_path, brain_path, anim=True)
