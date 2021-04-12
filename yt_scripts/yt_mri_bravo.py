@@ -25,9 +25,12 @@ def yt_render(f_path, brain_path, anim=False):
     alpha_brain = 1.0
     
     wat_data = dict(density = (wat_arr, "g/cm**3"))
-    wat_bbox = np.array([[0, wat_arr.shape[0] * res_x],
-                         [0, wat_arr.shape[1] * res_y],
-                         [0, wat_arr.shape[2] * res_z]])
+    ext_x = wat_arr.shape[0] * res_x
+    ext_y = wat_arr.shape[1] * res_y
+    ext_z = wat_arr.shape[2] * res_z
+    wat_bbox = np.array([[-ext_x/2.,ext_x/2.],
+                         [-ext_y/2.,ext_y/2.],
+                         [-ext_z/2.,ext_z/2.]])
     wat_ds = yt.load_uniform_grid(wat_data, wat_arr.shape,
                                   length_unit = "mm",
                                   bbox=wat_bbox,
@@ -47,12 +50,15 @@ def yt_render(f_path, brain_path, anim=False):
     print(f"Brain max: {brain_arr.max()}")
     print(f"Brain shape: {brain_arr.shape}")
     brain_data = dict(density = (brain_arr, "g/cm**3"))
-    # brain_bbox = np.array([[0, brain_arr.shape[0] * res_x],
-    #                        [0, brain_arr.shape[1] * res_y],
-    #                        [0, brain_arr.shape[2] * res_z]])
+    print(res_x)
+    print(res_y)
+    scale = 1.2
+    brain_bbox = np.array([[-scale *ext_x/2.,scale*ext_x/2.],
+                           [-ext_y/2.,ext_y/2.],
+                           [-ext_z/2.,ext_z/2.]])
     brain_ds = yt.load_uniform_grid(brain_data, brain_arr.shape,
                                     length_unit = "mm",
-                                    bbox=wat_bbox,
+                                    bbox=brain_bbox,
                                     nprocs=4)
     brain_source = VolumeSource(brain_ds, field='density')
     sc.add_source(brain_source)
@@ -92,8 +98,8 @@ def yt_render(f_path, brain_path, anim=False):
     cam.set_resolution((512, 512))
     cam.focus = wat_ds.domain_center
     cam.north_vector = np.array([0., 0., 1.0])
-    cam.position = wat_ds.arr([0., 1., 0.5], 'unitary')
-    cam.rotate(np.pi/3.,
+    cam.position = wat_ds.arr([0., 2., 0.], 'unitary')
+    cam.rotate(np.pi,
                rot_vector=np.array([0., 0., 1.]),
                rot_center=wat_ds.domain_center)
 
