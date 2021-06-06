@@ -95,14 +95,14 @@ def yt_render(f_path, brain_path, anim=False):
     ### Set up camera ###
     #####################
     cam = sc.add_camera()
-    cam.set_resolution((512, 512))
+    cam.set_resolution((1024, 1024))
     cam.focus = wat_ds.domain_center
     cam.north_vector = np.array([0., 0., 1.0])
     cam.position = wat_ds.arr([0., 2., 0.], 'unitary')
-    cam.rotate(np.pi,
-               rot_vector=np.array([0., 0., 1.]),
-               rot_center=wat_ds.domain_center)
-
+    # cam.rotate(np.pi/2.,
+    #            rot_vector=np.array([0., 0., 1.]),
+    #            rot_center=wat_ds.domain_center)
+    cam.zoom(0.7)
 
     ### Renering ###
     ################

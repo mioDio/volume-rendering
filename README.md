@@ -12,4 +12,4 @@ The transfer function for the brain is shown below:
 
 While the transfer function of the water image including the skull is shown in this image:
 
-<img src="img/water_transfer_function.png" alt="Transfer function of the brain volume" width="350">
+<img src="img/wat_transfer_function.png" alt="Transfer function of the brain volume" width="350">
